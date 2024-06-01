@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { shippingInfo } from "../redux/reducer/cartReducer";
+import { Helmet } from "react-helmet";
 
 const Shipping = () => {
   const { cartItem, total } = useSelector((state) => state?.cartReducer);
@@ -14,6 +15,7 @@ const Shipping = () => {
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
   const [pinCode, setPinCode] = useState();
+  const [phone, setPhone] = useState();
   const navigate = useNavigate();
   const dispacth = useDispatch();
 
@@ -23,12 +25,17 @@ const Shipping = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispacth(shippingInfo({ address, city, state, country, pincode: pinCode }));
+    dispacth(
+      shippingInfo({ address, city, state, country, pincode: pinCode, phone })
+    );
+    console.log(phone);
     try {
-      const { data } = await axios.post("/api/payment/create", {
-        amount: total,
-      });
-      console.log(data);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/payment/create`,
+        {
+          amount: total,
+        }
+      );
       navigate("/pay", { state: data.clientSecret });
     } catch (error) {
       toast.error("something went wrong ", { position: "top-center" });
@@ -38,8 +45,11 @@ const Shipping = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col max-w-96  justify-center items-center sm:m-auto  gap-5 px-5 mx-auto  pt-24"
+      className="flex flex-col max-w-96  justify-center items-center sm:m-auto  gap-5 px-5 mx-auto  pt-10"
     >
+      <Helmet>
+        <title>Shipping</title>
+      </Helmet>
       <h1 className="uppercase font-semibold text-2xl text-center">
         shipping Address
       </h1>
@@ -85,6 +95,14 @@ const Shipping = () => {
         required={true}
         value={pinCode}
         onChange={(e) => setPinCode(e.target.value)}
+      />
+      <input
+        type="number"
+        placeholder="phone Number"
+        className="border w-full p-2 border-gray-400 outline-none rounded-md"
+        required
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
       />
       <button
         type="submit"

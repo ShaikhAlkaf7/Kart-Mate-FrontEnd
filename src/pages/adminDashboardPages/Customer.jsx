@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AdminSideBar from "../../components/adminComponents/AdminSideBar";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 // const data = [
 //   {
 //     name: "Alkaf",
@@ -53,11 +54,14 @@ const Customer = () => {
 
   const fetchUser = async () => {
     try {
-      const { data } = await axios.get("/api/admin/users", {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/admin/users`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       setData(data?.users);
     } catch (error) {
       console.log(error);
@@ -77,6 +81,9 @@ const Customer = () => {
   }, []);
   return (
     <div className="grid lg:grid-cols-10 grid-cols-1  gap-6  bg-[#27005d]  h-screen ">
+      <Helmet>
+        <title>Customer</title>
+      </Helmet>
       {/* sidebar  */}
       <div className="lg:col-span-2 col-span-10 ">
         <AdminSideBar />

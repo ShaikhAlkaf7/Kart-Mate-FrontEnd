@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Loader from "./components/Loader";
 const Home = lazy(() => import("./pages/Home"));
 const Search = lazy(() => import("./pages/Search"));
@@ -37,6 +37,7 @@ import NotFound from "./pages/NotFound";
 import Checkout from "./pages/Checkout";
 const App = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     const getUserInLocal = localStorage.getItem("userAuthToken");
@@ -44,19 +45,20 @@ const App = () => {
   }, []);
 
   const { loading, user } = useSelector((state) => state?.userReducer);
+  const isDashboardRoute = location.pathname.startsWith("/admin");
 
   return loading ? (
     <Loader />
   ) : (
-    <BrowserRouter>
+    // <BrowserRouter>
+    <>
       {/* header  */}
-      <Header />
+      {!isDashboardRoute && <Header />}
       <ToastContainer />
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/cart" element={<Cart />} />
           <Route path="/product/:id" element={<ProductPage />} />
           // login and SighUp
           <Route element={<ProtectedRoute authPage={true} />}>
@@ -65,6 +67,7 @@ const App = () => {
           </Route>
           // securePage like agter login
           <Route element={<ProtectedRoute securePage={true} />}>
+            <Route path="/cart" element={<Cart />} />
             <Route path="/shipping" element={<Shipping />} />
             <Route path="/orders" element={<MyOrders />} />
             <Route path="/pay" element={<Checkout />} />
@@ -84,7 +87,8 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
-    </BrowserRouter>
+    </>
+    // </BrowserRouter>
   );
 };
 

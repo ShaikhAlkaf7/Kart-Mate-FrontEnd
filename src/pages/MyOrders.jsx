@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 const MyOrders = () => {
   const { user } = useSelector((state) => state?.userReducer);
@@ -9,11 +10,14 @@ const MyOrders = () => {
 
   const fetchMyOrders = async () => {
     try {
-      const { data } = await axios.get("/api/order/my-orders", {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/order/my-orders`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       setOrders(data.orders);
     } catch (error) {
       toast.error(error.response.data.message, { position: "top-center" });
@@ -25,6 +29,9 @@ const MyOrders = () => {
   }, []);
   return (
     <div className="pt-16 mx-2 md:mx-[10%]">
+      <Helmet>
+        <title>My Orders</title>
+      </Helmet>
       <h1 className="uppercase text-2xl">my orders</h1>
       <div className="my-5 sm:px-5 ">
         <h1 className="uppercase text-xl text-center my-5">Orders</h1>
@@ -38,9 +45,6 @@ const MyOrders = () => {
             <p className="font-semibold">{item.orderItems[0].name} </p>
             <p className="text-red-700 font-semibold">{item.status}</p>
             <p className="font-semibold">{item.total}</p>
-            <button className="bg-indigo-500 text-white px-2 py-1 rounded-md hover:bg-indigo-700">
-              View
-            </button>
           </div>
         ))}
       </div>

@@ -28,7 +28,7 @@ const ManageProduct = ({ product }) => {
       setLoader(true);
       dispatch(setPopupTrue());
       const { data } = await axios.put(
-        `/api/product/${product}`,
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/product/${product}`,
         {
           name,
           description,
@@ -67,11 +67,14 @@ const ManageProduct = ({ product }) => {
   const getProduct = async () => {
     try {
       setLoader(true);
-      const { data } = await axios.get(`/api/product/${product}`, {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/product/${product}`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       if (data?.success === true) {
         setName(data?.product?.name);
         setPhoto(data?.product?.photo);
@@ -90,11 +93,14 @@ const ManageProduct = ({ product }) => {
   const deleteProduct = async () => {
     dispatch(setPopupTrue());
     try {
-      const { data } = await axios.delete(`/api/product/${product}`, {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/product/${product}`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       if (data?.success == true) {
         toast.success(data?.message, { position: "top-center" });
         dispatch(setPopupFalse());

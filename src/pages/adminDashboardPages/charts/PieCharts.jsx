@@ -4,6 +4,7 @@ import { Chart as ChartJs } from "chart.js/auto";
 import { Doughnut, Pie } from "react-chartjs-2";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 const PieCharts = () => {
   const [orderFulFilmentRatio, setOrderFulFilmentRatio] = useState([]);
@@ -16,11 +17,14 @@ const PieCharts = () => {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get("/api/dashboard/pie", {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/dashboard/pie`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       setOrderFulFilmentRatio(data?.charts?.orderFullFilment);
       setStock(data?.charts?.stockAvalability);
       setRevenueDistrubation(data?.charts?.revenueDistribution);
@@ -33,11 +37,14 @@ const PieCharts = () => {
 
   const fetchProductCategories = async () => {
     try {
-      const { data } = await axios.get("/api/dashboard/stats", {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/dashboard/stats`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       setCategory(data?.categoryCount);
     } catch (error) {
       console.log(error);
@@ -51,6 +58,9 @@ const PieCharts = () => {
 
   return (
     <div className=" grid lg:grid-cols-10 grid-cols-1  gap-6  bg-[#27005d]  h-screen ">
+      <Helmet>
+        <title>Pie charts</title>
+      </Helmet>
       {/* sidebar  */}
       <div className="lg:col-span-2 col-span-10  ">
         <AdminSideBar />

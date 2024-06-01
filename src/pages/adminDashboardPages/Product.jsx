@@ -8,6 +8,7 @@ import ManageProduct from "../../components/adminComponents/popus/ManageProduct"
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 const Product = () => {
   const [data, setData] = useState([]);
@@ -17,11 +18,14 @@ const Product = () => {
 
   const fetchProduct = async () => {
     try {
-      const { data } = await axios.get("/api/product/admin-products", {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/product/admin-products`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       setData(data?.products);
     } catch (error) {
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -50,6 +54,9 @@ const Product = () => {
 
   return (
     <div className=" grid lg:grid-cols-10 grid-cols-1  gap-6  bg-[#27005d]  h-screen ">
+      <Helmet>
+        <title>Products</title>
+      </Helmet>
       {/* sidebar  */}
       <div className="lg:col-span-2 col-span-10  ">
         <AdminSideBar />

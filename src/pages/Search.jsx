@@ -4,6 +4,7 @@ import ProductCard from "../components/productComponents/ProductCard";
 import { IoFilterOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [categories, setCategories] = useState([]);
@@ -29,7 +30,9 @@ const Search = () => {
   // fetching  the category in filter coloum
   const fetchCategories = async () => {
     try {
-      const { data } = await axios.get("/api/product/categories");
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/product/categories`
+      );
       setCategories(data?.categories);
     } catch (error) {
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -43,11 +46,11 @@ const Search = () => {
   const fetchProducts = async () => {
     try {
       const { data } = await axios.get(
-        `/api/product/search?search=${product != null ? product : ""}&sort=${
-          sort != null ? sort : "none"
-        }&category=${category != null ? category : ""}&price=${
-          price != null ? price : ""
-        }`
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/product/search?search=${
+          product != null ? product : ""
+        }&sort=${sort != null ? sort : "none"}&category=${
+          category != null ? category : ""
+        }&price=${price != null ? price : ""}`
       );
       setdata(data?.products);
     } catch (error) {
@@ -80,6 +83,9 @@ const Search = () => {
   };
   return (
     <div className="flex flex-col md:flex-row  w-full md:h-screen pt-10 ">
+      <Helmet>
+        <title>Search</title>
+      </Helmet>
       <button
         onClick={() => setShow(!show)}
         className=" md:my-5 absolute md:static font-semibold text-xl text-center md:w-full md:hidden mx-5 my-3"

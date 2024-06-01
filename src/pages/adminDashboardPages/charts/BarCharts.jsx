@@ -5,6 +5,7 @@ import { Bar } from "react-chartjs-2";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { Helmet } from "react-helmet";
 
 const getLastMonths = () => {
   const currentDate = moment();
@@ -41,11 +42,14 @@ const BarChats = () => {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get("/api/dashboard/bar", {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/dashboard/bar`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       setProducts(data?.chart?.productCount);
       setUsers(data?.chart?.userCount);
       setOrders(data?.chart?.orderCount);
@@ -61,6 +65,9 @@ const BarChats = () => {
   }, []);
   return (
     <div className="  grid lg:grid-cols-10 grid-cols-1  gap-6  bg-[#27005d]  h-screen ">
+      <Helmet>
+        <title>Bar Charts</title>
+      </Helmet>
       {/* sidebar  */}
       <div className="lg:col-span-2 col-span-10   ">
         <AdminSideBar />

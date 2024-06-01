@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 const SighUp = () => {
   const [email, setEmail] = useState("");
@@ -16,15 +17,18 @@ const SighUp = () => {
   const signupHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/api/user/signup", {
-        name,
-        email,
-        password,
-        dob: DOB,
-        phoneNumber,
-      });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/user/signup`,
+        {
+          name,
+          email,
+          password,
+          dob: DOB,
+          phoneNumber,
+        }
+      );
       if (data?.success == true) {
-        navigate("/");
+        navigate("/login");
         toast.success("Sign Up success", { position: "top-center" });
       }
     } catch (error) {
@@ -37,6 +41,9 @@ const SighUp = () => {
       className="flex flex-col max-w-96  justify-center items-center sm:m-auto  gap-5 px-5 mx-auto py-20"
       onSubmit={signupHandler}
     >
+      <Helmet>
+        <title>Sign Up</title>
+      </Helmet>
       <h1 className="uppercase font-semibold text-2xl text-center">Sign-up</h1>
       <input
         type="text"

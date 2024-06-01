@@ -11,10 +11,9 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { resetCart } from "../redux/reducer/cartReducer";
+import { Helmet } from "react-helmet";
 
-const stripePromise = loadStripe(
-  "pk_test_51P6rJpSFLumvHxSQkNEy7Rlj9j3p8Khl5m9kF2WpLEFGAzuZcQZJGqzxqsCmonSlokybsCaUi6hQTM6UYKw0CsQ500Ke8K9Mbe"
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PROMISE);
 
 const CheckOutForm = () => {
   const stripe = useStripe();
@@ -46,15 +45,16 @@ const CheckOutForm = () => {
         confirmParams: { return_url: window.location.origin },
         redirect: "if_required",
       });
+      console.log(paymentIntent);
 
       if (error) {
         setProcessing(false);
         return toast.error(error.message, { position: "top-center" });
       }
-
+      console.log(shippingInfo);
       if (paymentIntent.status === "succeeded") {
         const { data } = await axios.post(
-          "",
+          `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/order/new`,
           {
             shippingInfo,
             subtotal: subTotal,
@@ -85,6 +85,9 @@ const CheckOutForm = () => {
   };
   return (
     <div className="max-w-[400px] w-full m-auto my-4">
+      <Helmet>
+        <title>CheckOut</title>
+      </Helmet>
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         <PaymentElement />
         <button

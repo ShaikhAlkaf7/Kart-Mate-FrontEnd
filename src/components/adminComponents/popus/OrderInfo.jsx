@@ -31,7 +31,7 @@ const OrderInfo = ({ orderId }) => {
     dispatch(setPopupTrue());
     try {
       const { data } = await axios.put(
-        `/api/order/${orderId}`,
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/order/${orderId}`,
         { status },
         {
           headers: {
@@ -50,11 +50,14 @@ const OrderInfo = ({ orderId }) => {
     try {
       dispatch(setPopupTrue());
 
-      const { data } = await axios.delete(`/api/order/${orderId}`, {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/order/${orderId}`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       toast.success(data.message, { position: "top-center" });
       dispatch(setPopupFalse());
     } catch (error) {

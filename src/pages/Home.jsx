@@ -3,6 +3,7 @@ import ProductCard from "../components/productComponents/ProductCard";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 // const product = [
 //   {
@@ -31,7 +32,7 @@ const Home = () => {
   const banners = [
     "https://img.freepik.com/free-photo/photocomposition-horizontal-shopping-banner-with-woman-big-smartphone_23-2151201773.jpg?size=626&ext=jpg",
     "https://img.freepik.com/free-psd/landing-page-template-online-fashion-sale_23-2148585400.jpg?size=626&ext=jpg",
-    "https://img.freepik.com/free-psd/shopping-woman-template-banner_23-2148764976.jpg?size=626&ext=jpg",
+    "https://img.freepik.com/free-vector/horizontal-sale-banner-template_23-2148897328.jpg?w=826&t=st=1716290786~exp=1716291386~hmac=73ea241ca63110dd6afec55dddc86a23ef6a059577a3d95d744d22990746ae6d",
   ]; // Array of banner content
 
   useEffect(() => {
@@ -43,7 +44,9 @@ const Home = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get("/api/product/latest-product");
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/product/latest-product`
+      );
 
       if (data?.success == true) {
         setProducts(data?.products);
@@ -59,11 +62,14 @@ const Home = () => {
 
   return (
     <div className="pt-10">
+      <Helmet>
+        <title>Home - Cart-Mate</title>
+      </Helmet>
       <section className="w-full sm:h-[70vh] object-cover">
         <img
           src={banners[bannerIndex]}
           alt={banners[bannerIndex]}
-          className="w-full sm:h-[70vh] object-cover "
+          className="w-full sm:h-[70vh] object-contain "
         />
       </section>
       <div className="my-8 px-4 ">

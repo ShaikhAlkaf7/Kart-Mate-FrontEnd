@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminSideBar from "../../components/adminComponents/AdminSideBar";
+import { Helmet } from "react-helmet";
 
 const allLeters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const allNumbers = "123456789";
@@ -44,6 +45,9 @@ const GenrateCopun = () => {
 
   return (
     <div className=" grid lg:grid-cols-10 grid-cols-1  gap-6  bg-[#27005d]  h-screen ">
+      <Helmet>
+        <title>Genrate Cupon</title>
+      </Helmet>
       {/* sidebar  */}
       <div className="lg:col-span-2 col-span-10  ">
         <AdminSideBar />

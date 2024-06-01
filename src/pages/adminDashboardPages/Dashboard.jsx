@@ -9,6 +9,7 @@ import DataCards from "../../components/adminComponents/dashboard/DataCards";
 import RevenueANDinventary from "../../components/adminComponents/dashboard/RevenueANDinventary";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state?.userReducer);
@@ -19,11 +20,14 @@ const Dashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const { data } = await axios.get("/api/dashboard/stats", {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/dashboard/stats`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       setStats(data?.stats);
       setBarChart(data?.chart);
       setInventoryData(data?.categoryCount);
@@ -42,6 +46,9 @@ const Dashboard = () => {
 
   return (
     <div className=" grid lg:grid-cols-10 grid-cols-1  gap-6  bg-[#27005d]  h-screen  ">
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
       {/* sidebar  */}
       <div className="lg:col-span-2 col-span-10  ">
         <AdminSideBar />

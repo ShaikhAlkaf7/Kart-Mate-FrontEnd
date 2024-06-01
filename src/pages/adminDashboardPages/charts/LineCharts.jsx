@@ -5,6 +5,7 @@ import { Chart as ChartJs } from "chart.js/auto";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import moment from "moment";
+import { Helmet } from "react-helmet";
 
 const getLastMonths = () => {
   const currentDate = moment();
@@ -45,11 +46,14 @@ const LineCharts = () => {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get("/api/dashboard/line", {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/dashboard/line`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
       setDiscount(data?.chart?.discount);
       setProducts(data?.chart?.productCount);
       setRevenue(data?.chart?.revenue);
@@ -64,6 +68,9 @@ const LineCharts = () => {
   }, []);
   return (
     <div className=" grid lg:grid-cols-10 grid-cols-1  gap-6  bg-[#27005d]  h-screen  ">
+      <Helmet>
+        <title>Line Charts</title>
+      </Helmet>
       {/* sidebar  */}
       <div className="lg:col-span-2 col-span-10">
         <AdminSideBar />

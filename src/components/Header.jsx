@@ -23,7 +23,7 @@ const Header = () => {
   const logoutHandler = () => {
     dispatch(removeUser());
     localStorage.removeItem("userAuthToken");
-    navigate("/");
+    navigate("/login");
   };
 
   const handleSearch = (e) => {
@@ -57,19 +57,17 @@ const Header = () => {
         <FaSearch className="cursor-pointer" />
       </form>
       <div className="flex items-center justify-between sm:w-[10%] w-[20%] sm:text-xl text-base gap-2">
+        <NavLink
+          to={"/cart"}
+          className={({ isActive }) =>
+            `${isActive ? "text-black" : "hover:text-black text-gray-700  "}`
+          }
+          title="Cart"
+        >
+          <FaShoppingCart />
+        </NavLink>
         {user ? (
           <>
-            <NavLink
-              to={"/cart"}
-              className={({ isActive }) =>
-                `${
-                  isActive ? "text-black" : "hover:text-black text-gray-700  "
-                }`
-              }
-              title="Cart"
-            >
-              <FaShoppingCart />
-            </NavLink>{" "}
             {user == "admin" ? (
               <NavLink
                 to={"/admin/dashboard"}

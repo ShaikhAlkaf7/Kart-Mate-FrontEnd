@@ -13,6 +13,7 @@ const initialState = {
     state: "",
     country: "",
     pincode: "",
+    phone: "",
   },
 };
 
@@ -58,6 +59,7 @@ export const cartReducer = createSlice({
       state.shippingInfo.country = action.payload.country;
       state.shippingInfo.pincode = action.payload.pincode;
       state.shippingInfo.state = action.payload.state;
+      state.shippingInfo.phone = action.payload.phone;
     },
     resetCart: () => initialState,
   },

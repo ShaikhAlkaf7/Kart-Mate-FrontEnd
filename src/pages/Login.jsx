@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { addUser } from "../redux/reducer/userReducer";
 import { useDispatch } from "react-redux";
+import { Helmet } from "react-helmet";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,10 +17,13 @@ const Login = () => {
   const loginHandler = async (e) => {
     try {
       e.preventDefault();
-      const { data } = await axios.post("/api/user/login", {
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/user/login`,
+        {
+          email,
+          password,
+        }
+      );
       if (data.success == true) {
         // we are settign the token in to local storege
         const addUserInLocal = {
@@ -44,6 +48,9 @@ const Login = () => {
       className="flex flex-col max-w-96  justify-center items-center sm:m-auto  gap-5 px-5 mx-auto py-20"
       onSubmit={loginHandler}
     >
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       <h1 className="uppercase font-semibold text-2xl text-center">Login</h1>
       <input
         type="email"

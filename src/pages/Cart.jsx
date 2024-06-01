@@ -11,6 +11,7 @@ import {
   removeCartItem,
 } from "../redux/reducer/cartReducer";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -23,11 +24,16 @@ const Cart = () => {
 
   const applyCoupon = async () => {
     try {
-      const { data } = await axios.get(`api/payment/discount?cupon=${cupon}`, {
-        headers: {
-          Authorization: user?.token,
-        },
-      });
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_API_ROUTE
+        }api/payment/discount?cupon=${cupon}`,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
+      );
 
       if (data.success == true) {
         setIsValidCuponCode(true);
@@ -71,6 +77,9 @@ const Cart = () => {
 
   return (
     <div className="flex sm:justify-between  items-center sm:items-stretch flex-col pt-24  sm:flex-row sm:px-10 px-2 gap-5">
+      <Helmet>
+        <title>Cart</title>
+      </Helmet>
       <main className="sm:w-[70%] w-full">
         {cartItem.map((item) => (
           <CartItem

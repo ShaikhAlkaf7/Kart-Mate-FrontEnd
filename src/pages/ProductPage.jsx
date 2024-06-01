@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addToCart } from "../redux/reducer/cartReducer";
+import { Helmet } from "react-helmet";
 
 const ProductPage = () => {
   let quantity = 1;
@@ -13,7 +14,9 @@ const ProductPage = () => {
   const dispatch = useDispatch();
 
   const fetchProduct = async () => {
-    const { data } = await axios.get(`/api/product/${id}`);
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/product/${id}`
+    );
     setProduct(data?.product);
   };
 
@@ -29,6 +32,9 @@ const ProductPage = () => {
   }, []);
   return (
     <div className=" m-5 flex flex-col md:flex-row justify-evenly w-[90%] gap-5">
+      <Helmet>
+        <title>{product?.name}</title>
+      </Helmet>
       <div className="md:w-[50%] w-full flex justify-center items-center">
         <img src={product?.photo} alt="" />
       </div>

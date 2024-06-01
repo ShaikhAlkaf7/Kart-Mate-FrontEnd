@@ -25,7 +25,7 @@ const NewProduct = () => {
       e.preventDefault();
       dispatch(setPopupTrue());
       const { data } = await axios.post(
-        `/api/product/create-product`,
+        `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/product/create-product`,
         {
           name,
           description,

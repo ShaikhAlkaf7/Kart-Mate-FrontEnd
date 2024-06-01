@@ -4,6 +4,7 @@ import OrderInfo from "../../components/adminComponents/popus/OrderInfo";
 import { RxCross1 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 const Transaction = () => {
   const [orderId, setOrderId] = useState();
@@ -13,11 +14,14 @@ const Transaction = () => {
   const { value } = useSelector((state) => state?.popup);
 
   const fetchOrders = async () => {
-    const { data } = await axios.get("/api/order/all-orders", {
-      headers: {
-        Authorization: user?.token,
-      },
-    });
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND_API_ROUTE}/api/order/all-orders`,
+      {
+        headers: {
+          Authorization: user?.token,
+        },
+      }
+    );
     console.log(data);
     setData(data.orders);
   };
@@ -45,6 +49,9 @@ const Transaction = () => {
   }, [value]);
   return (
     <div className="grid lg:grid-cols-10 grid-cols-1  gap-6  bg-[#27005d]  h-screen ">
+      <Helmet>
+        <title>Transaction</title>
+      </Helmet>
       {/* sidebar  */}
       <div className="lg:col-span-2 col-span-10  ">
         <AdminSideBar />
@@ -70,10 +77,10 @@ const Transaction = () => {
               {currentRows.map((d) => (
                 <tr className="border-b border-gray-600 ">
                   {/* <td className="pt-5">{d.photo}</td> */}
-                  <td className="pt-5">{d.user.name}</td>
-                  <td className="pt-5">{d.total}</td>
-                  <td className="pt-5">{d.discout}</td>
-                  <td className="pt-5">{d.orderItems.length}</td>
+                  <td className="pt-5">{d?.user?.name}</td>
+                  <td className="pt-5">{d?.total}</td>
+                  <td className="pt-5">{d?.discout}</td>
+                  <td className="pt-5">{d?.orderItems.length}</td>
                   <td className="pt-5 hidden sm:block">{d.status}</td>
                   <td className="pt-5 pb-3">
                     <button
